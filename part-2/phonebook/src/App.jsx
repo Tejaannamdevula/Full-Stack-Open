@@ -3,6 +3,7 @@ import Filter from "./Components/Filter";
 import PersonForm from "./Components/PersonForm";
 import Numbers from "./Components/Numbers";
 import axios from "axios";
+import personService from "./Services/persons";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -12,10 +13,15 @@ function App() {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    // axios.get("http://localhost:3001/persons").then((response) => {
+    //   setPersons(response.data);
+    // });
+
+    personService.getAll().then((initialState) => {
+      setPersons(initialState);
     });
   }, []);
+
   const filteredPersons = persons.filter((person) =>
     person.name.toLowerCase().includes(filter.toLowerCase())
   );
@@ -34,9 +40,12 @@ function App() {
       name: newName,
       number: newNumber,
     };
-    setPersons(persons.concat(personObj));
-    setNewName("");
-    setNewNumber("");
+
+    personService.create(personObj).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson));
+      setNewName("");
+      setNewNumber("");
+    });
   };
 
   return (
