@@ -48,6 +48,17 @@ function App() {
     });
   };
 
+  const handleDelete = (name, id) => {
+    if (window.confirm(`Delete ${name} `)) {
+      console.log(`deleted ${name} ${id}`);
+      personService.remove(id).then((returnedObj) => {
+        console.log(returnedObj);
+        setPersons(persons.filter((person) => person.id !== returnedObj.id));
+      });
+    } else {
+    }
+  };
+
   return (
     <>
       <div>
@@ -73,7 +84,10 @@ function App() {
 
         <h2>Numbers</h2>
 
-        <Numbers persons={filteredPersons}></Numbers>
+        <Numbers
+          persons={filteredPersons}
+          handleDelete={handleDelete}
+        ></Numbers>
       </div>
     </>
   );

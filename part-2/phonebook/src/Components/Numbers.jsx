@@ -1,5 +1,5 @@
 import Name from "./Name";
-const Numbers = ({ persons }) => {
+const Numbers = ({ persons, handleDelete }) => {
   return (
     <div>
       {persons.map((person) => {
@@ -8,6 +8,8 @@ const Numbers = ({ persons }) => {
             key={person.id}
             name={person.name}
             number={person.number}
+            id={person.id}
+            handleDelete={handleDelete}
           ></Name>
         );
       })}
