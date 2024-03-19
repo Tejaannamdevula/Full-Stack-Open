@@ -29,20 +29,51 @@ function App() {
   const handleSubmit = (event) => {
     event.preventDefault();
     if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one`
+        )
+      ) {
+        // console.log(newNumber);
+        const person = persons.find((person) => person.name === newName);
+
+        const changedDetailsPerson = { ...person, number: newNumber };
+
+        personService
+          .update(changedDetailsPerson.id, changedDetailsPerson)
+          .then((updatedobj) => {
+            console.log("updatedobj", updatedobj);
+            setPersons(
+              persons.map((person) =>
+                person.id !== changedDetailsPerson.id
+                  ? person
+                  : changedDetailsPerson
+              )
+            );
+          });
+      }
+      personService.getAll().then((newdata) => {
+        setPersons(newdata);
+      });
       setNewName("");
       setNewNumber("");
 
       return;
     }
     const personObj = {
-      id: persons.length + 1,
+      id: (persons.length + 1).toString(),
       name: newName,
       number: newNumber,
     };
 
     personService.create(personObj).then((returnedPerson) => {
-      setPersons(persons.concat(returnedPerson));
+      // alert(`${returnedPerson}`);
+
+      // console.log()
+      personService.getAll().then((newdata) => {
+        setPersons(newdata);
+      });
+
       setNewName("");
       setNewNumber("");
     });
@@ -50,11 +81,16 @@ function App() {
 
   const handleDelete = (name, id) => {
     if (window.confirm(`Delete ${name} `)) {
-      console.log(`deleted ${name} ${id}`);
-      personService.remove(id).then((returnedObj) => {
-        console.log(returnedObj);
-        setPersons(persons.filter((person) => person.id !== returnedObj.id));
-      });
+      console.log(`deleted ${name} ${id} ,${typeof id}`);
+      personService
+        .remove(id)
+        .then((returnedObj) => {
+          console.log(returnedObj);
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch((err) => {
+          console.log("tttt", err);
+        });
     } else {
     }
   };
