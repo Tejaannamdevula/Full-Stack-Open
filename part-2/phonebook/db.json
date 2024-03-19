@@ -28,12 +28,17 @@
     {
       "id": "6",
       "name": "SHOYO!!",
-      "number": "10"
+      "number": "25"
     },
     {
       "id": "7",
       "name": "KOBE BRYANT",
       "number": "24"
+    },
+    {
+      "id": "8",
+      "name": "Kakashi Hatake",
+      "number": "6"
     }
   ]
 }

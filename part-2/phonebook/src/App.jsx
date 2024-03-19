@@ -4,13 +4,22 @@ import PersonForm from "./Components/PersonForm";
 import Numbers from "./Components/Numbers";
 import axios from "axios";
 import personService from "./Services/persons";
+import "./index.css";
 
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null;
+  }
+  return <div className="error">{message}</div>;
+};
 function App() {
   const [persons, setPersons] = useState([]);
 
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+
+  const [error, setErrorMessage] = useState("");
 
   useEffect(() => {
     // axios.get("http://localhost:3001/persons").then((response) => {
@@ -51,12 +60,16 @@ function App() {
               )
             );
           });
+        personService.getAll().then((newdata) => {
+          setPersons(newdata);
+        });
+        setErrorMessage(`updated ${newName} number`);
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 5000);
+        setNewName("");
+        setNewNumber("");
       }
-      personService.getAll().then((newdata) => {
-        setPersons(newdata);
-      });
-      setNewName("");
-      setNewNumber("");
 
       return;
     }
@@ -73,7 +86,10 @@ function App() {
       personService.getAll().then((newdata) => {
         setPersons(newdata);
       });
-
+      setErrorMessage(`Added ${newName} number`);
+      setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
       setNewName("");
       setNewNumber("");
     });
@@ -87,6 +103,10 @@ function App() {
         .then((returnedObj) => {
           console.log(returnedObj);
           setPersons(persons.filter((person) => person.id !== id));
+          setErrorMessage(`added ${newName} number`);
+          setTimeout(() => {
+            setErrorMessage("");
+          }, 5000);
         })
         .catch((err) => {
           console.log("tttt", err);
@@ -99,6 +119,8 @@ function App() {
     <>
       <div>
         <h2> phonebook</h2>
+
+        <Notification message={error}></Notification>
 
         <Filter
           value={filter}
