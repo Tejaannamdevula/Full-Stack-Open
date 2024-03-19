@@ -59,6 +59,16 @@ function App() {
                   : changedDetailsPerson
               )
             );
+          })
+          .catch((err) => {
+            setErrorMessage(
+              `person '${person.name} ' was already removed from the server`
+            );
+            setTimeout(() => {
+              setErrorMessage("");
+            }, 5000);
+
+            setPersons(persons.filter((p) => p.id != changedDetailsPerson.id));
           });
         personService.getAll().then((newdata) => {
           setPersons(newdata);
