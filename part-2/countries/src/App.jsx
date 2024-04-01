@@ -21,11 +21,15 @@ function App() {
     });
   }, []);
   useEffect(() => {
-    setFilteredCountries(
-      countries.filter((country) =>
-        country.name.common.toLowerCase().includes(search.toLowerCase())
-      )
-    );
+    if (search === "") {
+      setFilteredCountries([]);
+    } else {
+      setFilteredCountries(
+        countries.filter((country) =>
+          country.name.common.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
   }, [search, countries]);
 
   // if (!countries) {
