@@ -1,5 +1,21 @@
+import React from "react";
+import { useState } from "react";
+import Country from "./Country";
 const Display = ({ countries }) => {
-  length = countries.length;
+  // const [selctedCountry, setSelectedCountry] = useState(null);
+  // for multiple selections
+  const [selctedCountry, setSelectedCountry] = useState([]);
+  const handleClick = (countryName) => {
+    // setSelectedCountry(selctedCountry === countryName ? null : countryName);
+    if (selctedCountry.includes(countryName)) {
+      setSelectedCountry(
+        selctedCountry.filter((country) => country !== countryName)
+      );
+    } else {
+      setSelectedCountry([...selctedCountry, countryName]);
+    }
+  };
+  const length = countries.length;
   if (length >= 10) {
     return (
       <>
@@ -10,32 +26,20 @@ const Display = ({ countries }) => {
   } else if (length < 10) {
     if (length == 1) {
       const country = countries[0];
-      console.log("hello", country);
-
-      const languages = Object.values(country.languages);
-      const flag = country.flag;
-      return (
-        <>
-          <h1>{country.name.common}</h1>
-          <div>capital {country.capital}</div>
-          <div>area {country.area}</div>
-
-          <h3>languages:</h3>
-
-          <ul>
-            {languages.map((language) => (
-              <li>{language}</li>
-            ))}
-          </ul>
-          <div> Flag </div>
-          <div style={{ fontSize: "8em" }}> {country.flag}</div>
-        </>
-      );
+      return <Country country={country}></Country>;
     } else {
       return (
         <>
           {countries.map((country) => (
-            <li>{country.name.common}</li>
+            <li key={country.name.common}>
+              {country.name.common}
+              <button onClick={() => handleClick(country.name.common)}>
+                {selctedCountry.includes(country.name.common) ? "hide" : "show"}
+              </button>
+              {selctedCountry.includes(country.name.common) && (
+                <Country country={country}></Country>
+              )}
+            </li>
           ))}
         </>
       );
