@@ -1,4 +1,5 @@
 import React from "react";
+import Weather from "./Weather";
 const Country = ({ country }) => {
   const languages = Object.values(country.languages);
   return (
@@ -19,6 +20,7 @@ const Country = ({ country }) => {
         alt={`${country.name.common}'s flag`}
         style={{ width: "100px" }}
       />
+      <Weather country={country}></Weather>
     </>
   );
 };

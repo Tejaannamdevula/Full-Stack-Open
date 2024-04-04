@@ -1,7 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import Country from "./Country";
+import Weather from "./Weather";
 const Display = ({ countries }) => {
+  //for single selection
   // const [selctedCountry, setSelectedCountry] = useState(null);
   // for multiple selections
   const [selctedCountry, setSelectedCountry] = useState([]);
@@ -26,7 +28,12 @@ const Display = ({ countries }) => {
   } else if (length < 10) {
     if (length == 1) {
       const country = countries[0];
-      return <Country country={country}></Country>;
+      return (
+        <>
+          <Country country={country}></Country>
+          {/* <Weather country={country}></Weather> */}
+        </>
+      );
     } else {
       return (
         <>
@@ -44,8 +51,6 @@ const Display = ({ countries }) => {
         </>
       );
     }
-  } else {
-    return <>countries.map()</>;
   }
 };
 export default Display;

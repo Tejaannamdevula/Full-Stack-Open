@@ -38,7 +38,7 @@ function App() {
   return (
     <>
       <Filter value={search} onChange={handleChange}></Filter>
-      {console.log("mathced countries", filteredCountries)}
+      {/* {console.log("mathced countries", filteredCountries)} */}
       <Display countries={filteredCountries}></Display>
     </>
   );
