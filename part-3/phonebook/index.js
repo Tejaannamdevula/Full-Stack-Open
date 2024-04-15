@@ -1,5 +1,25 @@
 const express = require("express");
 const app = express();
+const morgan = require("morgan");
+app.use(
+  morgan((tokens, req, res) => {
+    const logData = [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, "content-length"),
+      "-",
+      tokens["response-time"](req, res),
+      "ms",
+    ];
+
+    if (req.method === "POST") {
+      logData.push(JSON.stringify(req.body));
+    }
+
+    return logData.join(" ");
+  })
+);
 
 const data = [
   {
